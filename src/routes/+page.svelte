@@ -6,9 +6,20 @@
 
 <nav class="navbar">
   <div class="nav-container">
-    <!-- Central brand only -->
+    <!-- Central brand -->
     <div class="brand">
-      <span class="brand-text">Satyam Vision Creators</span>
+      <div class="brand-content">
+        <span class="brand-text">Satyam Vision Creators</span>
+        <span class="brand-caption">we create your dreams</span>
+      </div>
+    </div>
+    
+    <!-- Navigation links -->
+    <div class="nav-links">
+      <a href="#interior-design" class="nav-link">Interior Design</a>
+      <a href="#event-organization" class="nav-link">Event Organization</a>
+      <a href="#civil-work" class="nav-link">Civil Work</a>
+      <a href="#publicity" class="nav-link">Publicity - Ad Service</a>
     </div>
   </div>
 </nav>
@@ -31,12 +42,18 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 1.5rem 2rem;
+    justify-content: space-between;
+    padding: 1rem 2rem;
   }
 
   .brand {
     display: flex;
+    align-items: center;
+  }
+
+  .brand-content {
+    display: flex;
+    flex-direction: column;
     align-items: center;
   }
 
@@ -47,20 +64,62 @@
     letter-spacing: -0.025em;
   }
 
+  .brand-caption {
+    font-size: 1.25rem;
+    font-weight: 550;
+    color: #26282c;
+    font-style: italic;
+    margin-top: 0.25rem;
+    margin-left: 0.15rem;
+    letter-spacing: 0.025em;
+    align-self: flex-end;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    color: #374151;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.125rem;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: #1f2937;
+  }
+
   /* Mobile responsiveness */
   @media (max-width: 768px) {
     .nav-container {
-      padding: 1.25rem 1rem;
+      padding: 0.75rem 1rem;
     }
     
     .brand-text {
       font-size: 2rem;
+    }
+
+    .brand-caption {
+      font-size: 1.125rem;
+    }
+
+    .nav-links {
+      display: none;
     }
   }
 
   @media (max-width: 480px) {
     .brand-text {
       font-size: 1.75rem;
+    }
+
+    .brand-caption {
+      font-size: 2rem;
     }
   }
 </style>
