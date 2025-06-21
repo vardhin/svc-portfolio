@@ -4,8 +4,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Linden+Hill:ital@0;1&display=swap" rel="stylesheet">
 </svelte:head>
 
+<!-- Background image -->
+<div class="background-image"></div>
+
 <script>
   let activeSection = 'interior-design'; // Default active section
+  let isMobileMenuOpen = false; // Add mobile menu state
 
   const sections = {
     'interior-design': {
@@ -72,6 +76,11 @@
 
   function setActiveSection(section) {
     activeSection = section;
+    isMobileMenuOpen = false; // Close menu when section is selected
+  }
+
+  function toggleMobileMenu() {
+    isMobileMenuOpen = !isMobileMenuOpen;
   }
 </script>
 
@@ -84,11 +93,18 @@
         <span class="brand-caption">we create your dreams</span>
       </div>
     </div>
+    
+    <!-- Hamburger menu button - only visible on smaller screens -->
+    <button class="hamburger-btn" on:click={toggleMobileMenu} class:active={isMobileMenuOpen}>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </nav>
 
-<!-- Secondary pill bar -->
-<div class="pill-bar">
+<!-- Desktop pill bar - hidden on mobile -->
+<div class="pill-bar desktop-only">
   <div class="pill-container">
     <button class="nav-pill {activeSection === 'interior-design' ? 'active' : ''}" 
             on:click={() => setActiveSection('interior-design')}>
@@ -103,6 +119,31 @@
       Civil Work
     </button>
     <button class="nav-pill {activeSection === 'publicity' ? 'active' : ''}" 
+            on:click={() => setActiveSection('publicity')}>
+      Publicity & Ads
+    </button>
+  </div>
+</div>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu-overlay" class:open={isMobileMenuOpen} on:click={toggleMobileMenu}></div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" class:open={isMobileMenuOpen}>
+  <div class="mobile-menu-content">
+    <button class="mobile-nav-item {activeSection === 'interior-design' ? 'active' : ''}" 
+            on:click={() => setActiveSection('interior-design')}>
+      Interior Design
+    </button>
+    <button class="mobile-nav-item {activeSection === 'event-organization' ? 'active' : ''}" 
+            on:click={() => setActiveSection('event-organization')}>
+      Event Organization
+    </button>
+    <button class="mobile-nav-item {activeSection === 'civil-work' ? 'active' : ''}" 
+            on:click={() => setActiveSection('civil-work')}>
+      Civil Work
+    </button>
+    <button class="mobile-nav-item {activeSection === 'publicity' ? 'active' : ''}" 
             on:click={() => setActiveSection('publicity')}>
       Publicity & Ads
     </button>
@@ -158,12 +199,29 @@
     overflow-x: hidden;
   }
 
+  /* Background image styles */
+  .background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/eye1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(100%) blur(1px);
+    z-index: -1;
+  }
+
   .navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: transparent;
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     z-index: 1000;
     font-family: 'Linden Hill', serif;
     min-height: 60px;
@@ -174,9 +232,10 @@
     margin: 0;
     display: flex;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 1rem 1.5rem;
     min-height: 60px;
+    background: transparent !important;
   }
 
   .brand {
@@ -193,20 +252,133 @@
   .brand-text {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 900;
-    color: #1f2937;
+    color: #ffffff;
     letter-spacing: -0.025em;
     line-height: 1.1;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
   }
 
   .brand-caption {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     font-weight: 550;
-    color: #26282c;
+    color: #f3f4f6;
     font-style: italic;
     margin-top: -0.125rem;
-    margin-left: 50%;
+    margin-left: 40%;
     letter-spacing: 0.025em;
     line-height: 1.2;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+  }
+
+  .hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+  }
+
+  .hamburger-btn span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .hamburger-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .hamburger-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  .mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 999;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu.open {
+    right: 0;
+  }
+
+  .mobile-menu-content {
+    padding: 80px 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mobile-nav-item {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Linden Hill', serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    width: 100%;
+  }
+
+  .mobile-nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+  }
+
+  .mobile-nav-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+    font-weight: 700;
   }
 
   .pill-bar {
@@ -222,6 +394,10 @@
     pointer-events: none;
   }
 
+  .desktop-only {
+    display: block;
+  }
+
   .pill-container {
     display: flex;
     flex-direction: column;
@@ -233,13 +409,13 @@
   }
 
   .nav-pill {
-    background: transparent;
-    border: 1px solid rgba(107, 114, 128, 0.3);
-    color: #6b7280;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #1f2937;
     padding: 0.5rem 1.25rem;
     border-radius: 2rem;
     font-size: clamp(0.75rem, 2vw, 0.875rem);
-    font-weight: 500;
+    font-weight: 600;
     font-family: 'Linden Hill', serif;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -248,20 +424,23 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     width: fit-content;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
 
   .nav-pill:hover {
-    background: rgba(31, 41, 55, 0.05);
-    border-color: rgba(31, 41, 55, 0.4);
-    color: #374151;
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(31, 41, 55, 0.6);
+    color: #111827;
     transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   }
 
   .nav-pill.active {
-    background: rgba(31, 41, 55, 0.1);
-    color: #1f2937;
-    border-color: rgba(31, 41, 55, 0.4);
-    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.1);
+    background: rgba(255, 255, 255, 1);
+    color: #111827;
+    border-color: rgba(31, 41, 55, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    font-weight: 700;
   }
 
   .main-content {
@@ -269,6 +448,7 @@
     margin-left: 0;
     font-family: 'Linden Hill', serif;
     min-height: calc(100vh - 80px);
+    background: transparent;
   }
 
   .content-container {
@@ -284,22 +464,31 @@
     text-align: center;
     margin-bottom: 4rem;
     padding: 2rem 0;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
   }
 
   .hero-section h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 900;
-    color: #1f2937;
+    color: #ffffff;
     margin-bottom: 1rem;
     line-height: 1.2;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 0, 0, 0.6);
   }
 
   .hero-description {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
-    color: #6b7280;
+    color: #f3f4f6;
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+    background: transparent;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
   }
 
   .portfolio-section {
@@ -308,9 +497,14 @@
 
   .portfolio-section h2 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
-    color: #1f2937;
+    color: #ffffff;
     text-align: center;
     margin-bottom: 2rem;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 0, 0, 0.6);
+    font-weight: 800;
+    background: transparent;
+    padding: 1rem;
+    border-radius: 0.5rem;
   }
 
   .image-gallery {
@@ -323,13 +517,14 @@
   .image-item {
     border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
     background: #f8f9fa;
   }
 
   .image-item:hover {
     transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   }
 
   .image-item img {
@@ -341,9 +536,16 @@
 
   .timeline-section h2 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
-    color: #1f2937;
+    color: #ffffff;
     text-align: center;
     margin-bottom: 3rem;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 0, 0, 0.6);
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
   }
 
   .timeline {
@@ -358,9 +560,10 @@
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: #e5e7eb;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.7);
     transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   .timeline-item {
@@ -383,21 +586,26 @@
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     font-size: clamp(0.875rem, 2vw, 1rem);
     white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 2px solid #ffffff;
   }
 
   .timeline-content {
     width: 45%;
     padding: 1.5rem;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 1rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
   .timeline-item:nth-child(odd) .timeline-content {
@@ -412,26 +620,45 @@
 
   .timeline-content h3 {
     font-size: clamp(1.125rem, 3vw, 1.5rem);
-    color: #1f2937;
+    color: #111827;
     margin-bottom: 0.5rem;
     line-height: 1.3;
+    font-weight: 700;
   }
 
   .timeline-content p {
-    color: #6b7280;
+    color: #374151;
     line-height: 1.6;
     font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 500;
   }
 
-  /* Tablet styles */
+  /* Show hamburger menu and hide desktop pill bar below 1025px */
   @media (max-width: 1024px) {
+    .hamburger-btn {
+      display: flex;
+    }
+
+    .desktop-only {
+      display: none;
+    }
+
+    .mobile-menu-overlay {
+      display: block;
+    }
+
+    .mobile-menu {
+      display: block;
+    }
+
     .content-container {
       padding-left: 1.5rem;
       padding-right: 1.5rem;
+      margin-left: 0;
     }
 
-    .pill-bar {
-      padding-left: 1rem;
+    .main-content {
+      margin-left: 0;
     }
   }
 
@@ -445,54 +672,57 @@
 
   /* Mobile styles */
   @media (max-width: 768px) {
-    .pill-bar {
-      position: static;
-      margin-top: 0;
-      padding-left: 1rem;
-      background: #f9fafb;
-      border-bottom: 1px solid #e5e7eb;
-      pointer-events: auto;
-    }
-
-    .pill-container {
-      padding: 1rem 0;
-      gap: 0.5rem;
-      pointer-events: auto;
-    }
-
     .main-content {
-      margin-top: 0;
-      margin-left: 0;
+      margin-top: 80px;
     }
 
-    .content-container {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+    .mobile-menu {
+      width: 100%;
+      right: -100%;
     }
 
-    .nav-pill:hover {
-      transform: none;
+    .hero-section h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    .hero-description {
+      font-size: clamp(0.875rem, 2vw, 1rem);
+    }
+
+    .portfolio-section h2 {
+      font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+    }
+
+    .brand-text {
+      font-size: clamp(1.75rem, 4.5vw, 2.8rem);
     }
   }
 
   /* Small mobile styles */
   @media (max-width: 480px) {
-    .pill-bar {
-      padding-left: 0.75rem;
-    }
-
-    .pill-container {
-      padding: 0.75rem 0;
-    }
-
-    .nav-pill {
-      padding: 0.375rem 1rem;
-      font-size: 0.75rem;
+    .mobile-menu-content {
+      padding: 80px 1.5rem 2rem;
     }
 
     .content-container {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .hero-section h1 {
+      font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+    }
+
+    .hero-description {
+      font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+    }
+
+    .portfolio-section h2 {
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+    }
+
+    .brand-text {
+      font-size: clamp(1.6rem, 4.2vw, 2.5rem);
     }
   }
 
@@ -502,9 +732,14 @@
       padding: 1rem 0;
       margin-bottom: 2rem;
     }
-    
-    .pill-bar {
-      margin-top: 100px;
+
+    .mobile-menu-content {
+      padding: 70px 2rem 1rem;
+      gap: 0.75rem;
+    }
+
+    .mobile-nav-item {
+      padding: 0.75rem 1.5rem;
     }
   }
 
@@ -518,7 +753,9 @@
   /* Reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     .nav-pill,
-    .image-item {
+    .image-item,
+    .hamburger-btn span,
+    .mobile-menu {
       transition: none;
     }
   }
@@ -526,11 +763,33 @@
   /* Dark mode support */
   @media (prefers-color-scheme: dark) {
     .navbar {
-      background: transparent;
+      background: transparent !important;
     }
     
     .pill-bar {
       background: transparent;
+    }
+  }
+
+  /* Additional responsive fixes for brand caption */
+  @media (max-width: 860px) {
+    .brand-caption {
+      font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+      margin-left: 30%;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .brand-caption {
+      font-size: clamp(1.2rem, 2vw, 1.1rem);
+      margin-left: 30%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .brand-caption {
+      font-size: clamp(1.2rem, 1.8vw, 1rem);
+      margin-left: 30%;
     }
   }
 </style>
