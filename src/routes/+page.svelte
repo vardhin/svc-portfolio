@@ -163,22 +163,20 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: transparent;
     z-index: 1000;
     font-family: 'Linden Hill', serif;
-    min-height: 80px;
+    min-height: 60px;
   }
 
   .nav-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     padding: 1rem 1.5rem;
-    min-height: 80px;
+    min-height: 60px;
   }
 
   .brand {
@@ -206,33 +204,32 @@
     color: #26282c;
     font-style: italic;
     margin-top: -0.125rem;
+    margin-left: 50%;
     letter-spacing: 0.025em;
     line-height: 1.2;
   }
 
   .pill-bar {
     position: fixed;
-    top: 80px;
+    top: 0;
     left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: transparent;
     z-index: 999;
     font-family: 'Linden Hill', serif;
-    min-height: 60px;
+    margin-top: 120px;
+    width: auto;
+    padding-left: 1.5rem;
+    pointer-events: none;
   }
 
   .pill-container {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 1.5rem;
-    flex-wrap: wrap;
-    min-height: 60px;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    width: auto;
+    pointer-events: auto;
   }
 
   .nav-pill {
@@ -250,32 +247,37 @@
     outline: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    width: fit-content;
   }
 
   .nav-pill:hover {
     background: rgba(31, 41, 55, 0.05);
     border-color: rgba(31, 41, 55, 0.4);
     color: #374151;
-    transform: translateY(-1px);
+    transform: translateX(5px);
   }
 
   .nav-pill.active {
-    background: #1f2937;
-    color: white;
-    border-color: #1f2937;
-    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.2);
+    background: rgba(31, 41, 55, 0.1);
+    color: #1f2937;
+    border-color: rgba(31, 41, 55, 0.4);
+    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.1);
   }
 
   .main-content {
-    margin-top: 140px;
+    margin-top: 80px;
+    margin-left: 0;
     font-family: 'Linden Hill', serif;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 80px);
   }
 
   .content-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-left: 3%;
   }
 
   .hero-section {
@@ -424,142 +426,73 @@
   /* Tablet styles */
   @media (max-width: 1024px) {
     .content-container {
-      padding: 1.5rem 1rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
 
-    .image-gallery {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.25rem;
+    .pill-bar {
+      padding-left: 1rem;
     }
+  }
 
-    .nav-container {
-      justify-content: center;
+  /* Desktop styles - add space only on larger screens */
+  @media (min-width: 1025px) {
+    .content-container {
+      padding-left: 280px;
+      padding-right: 1.5rem;
     }
   }
 
   /* Mobile styles */
   @media (max-width: 768px) {
-    .navbar {
-      min-height: 70px;
-    }
-
-    .nav-container {
-      padding: 0.75rem 1rem;
-      justify-content: center;
-      min-height: 70px;
-    }
-
     .pill-bar {
-      top: 70px;
-      min-height: 80px;
+      position: static;
+      margin-top: 0;
+      padding-left: 1rem;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      pointer-events: auto;
     }
 
     .pill-container {
-      gap: 0.375rem;
-      padding: 0.75rem 1rem;
-      min-height: 80px;
-    }
-
-    .nav-pill {
-      padding: 0.4rem 1rem;
-      font-size: 0.8125rem;
+      padding: 1rem 0;
+      gap: 0.5rem;
+      pointer-events: auto;
     }
 
     .main-content {
-      margin-top: 150px;
+      margin-top: 0;
+      margin-left: 0;
     }
 
     .content-container {
-      padding: 1rem 1rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
 
-    .hero-section {
-      margin-bottom: 3rem;
-      padding: 1rem 0;
-    }
-
-    .image-gallery {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .image-item img {
-      height: 200px;
-    }
-
-    /* Simplified mobile timeline */
-    .timeline::before {
-      left: 1rem;
-    }
-
-    .timeline-year {
-      left: 1rem;
+    .nav-pill:hover {
       transform: none;
-      position: relative;
-      margin-bottom: 1rem;
-      display: inline-block;
-    }
-
-    .timeline-content {
-      width: calc(100% - 2rem);
-      margin-left: 2rem !important;
-      text-align: left !important;
-    }
-
-    .timeline-item {
-      flex-direction: column !important;
-      align-items: flex-start !important;
     }
   }
 
   /* Small mobile styles */
   @media (max-width: 480px) {
-    .navbar {
-      min-height: 60px;
-    }
-
-    .nav-container {
-      min-height: 60px;
-      padding: 0.5rem 0.75rem;
-    }
-
     .pill-bar {
-      top: 60px;
-      min-height: 100px;
+      padding-left: 0.75rem;
     }
 
     .pill-container {
-      padding: 0.5rem 0.75rem;
-      gap: 0.25rem;
-      min-height: 100px;
+      padding: 0.75rem 0;
     }
 
     .nav-pill {
-      padding: 0.375rem 0.875rem;
+      padding: 0.375rem 1rem;
       font-size: 0.75rem;
     }
 
-    .main-content {
-      margin-top: 160px;
-    }
-
     .content-container {
-      padding: 1rem 0.75rem;
-    }
-
-    .image-gallery {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .image-item img {
-      height: 180px;
-    }
-
-    .timeline-content {
-      padding: 1rem;
-      width: calc(100% - 1rem);
-      margin-left: 1rem !important;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
     }
   }
 
@@ -570,8 +503,8 @@
       margin-bottom: 2rem;
     }
     
-    .main-content {
-      margin-top: 120px;
+    .pill-bar {
+      margin-top: 100px;
     }
   }
 
@@ -593,19 +526,11 @@
   /* Dark mode support */
   @media (prefers-color-scheme: dark) {
     .navbar {
-      background: rgba(31, 41, 55, 0.95);
+      background: transparent;
     }
     
     .pill-bar {
-      background: rgba(31, 41, 55, 0.95);
-    }
-    
-    .brand-text {
-      color: #f9fafb;
-    }
-    
-    .brand-caption {
-      color: #d1d5db;
+      background: transparent;
     }
   }
 </style>
