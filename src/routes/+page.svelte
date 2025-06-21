@@ -206,7 +206,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('/eye1.jpg');
+    background-image: url('/eye1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
